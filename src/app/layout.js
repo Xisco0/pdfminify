@@ -25,7 +25,7 @@ import "../../public/styles/animate.css";
     title: "Pdf Minify",
     description: "Manage and convert documents, images, and office files with ease. PDF Tools, Image Tools, and Document Tools all in one place.",
     type: "website",
-    image: "/all-images/logoImages/logo.fw.png", // ensure the file extension is correct
+    image: "/all-images/logoImages/mobile_logo.ico", // ensure the file extension is correct
   },
 };
 

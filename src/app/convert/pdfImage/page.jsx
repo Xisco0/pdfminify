@@ -8,9 +8,17 @@ import ScrollToTopButton from "@/app/components/scrollUp";
 import Link from "next/link";
 import * as pdfjs from "pdfjs-dist/build/pdf";
 import CustomAlert from "@/app/components/alert";
-
+import dynamic from "next/dynamic";
 // Set the worker source for PDF.js
-pdfjs.GlobalWorkerOptions.workerSrc = `//${window.location.host}/pdf.worker.min.mjs`;
+
+// Import your component only on the client
+const PdfViewer = dynamic(() => import("./PdfViewer"), {
+  ssr: false,
+});
+
+if (typeof window !== "undefined") {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+}
 
 export default function PdfToImage() {
   const [file, setFile] = useState(null);
