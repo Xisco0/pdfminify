@@ -1,5 +1,6 @@
 "use client";
 
+export const ssr = false;
 import React, { useState } from "react";
 import { Upload, FileDown, Loader2, X, ChevronRight } from "lucide-react";
 import Header from "@/app/header";
