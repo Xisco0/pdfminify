@@ -119,6 +119,7 @@ export default function Footer(){
      
       <div className="w-full border-t border-gray-200 py-4 text-center text-gray-500 text-sm" data-aos="fade-up" data-aos-duration="1000">
         <p>© {new Date().getFullYear()} PDF Minify. All Rights Reserved.</p>
+        <p className="text-[11px]">Design and Developed by Xisco</p>
       </div>
 
     </footer>

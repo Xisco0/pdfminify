@@ -61,7 +61,7 @@ export default function Home() {
 
       {/* Tools Grid */}
       <main className="max-w-6xl w-[83%] mx-auto px-4 pb-16">
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 flex-wrap">
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 flex-wrap" id="main">
           {tools.map((t, i) => (
             <div 
               key={i} 

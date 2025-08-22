@@ -23,10 +23,10 @@ export default function Header() {
             
             <div className="flex items-center gap-4">
                 <Link
-                    href="/contactUs"
+                    href="#main"
                     className="px-4 py-2 bg-gradient-to-tr from-[#2389cc] to-[#1576b6]  text-white rounded-lg transition-colors"
                 >
-                    Contact Us
+                    Tools
                 </Link>
             </div>
         </div>
