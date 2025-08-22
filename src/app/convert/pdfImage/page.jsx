@@ -1,6 +1,5 @@
 "use client";
 
-export const ssr = false;
 import React, { useState } from "react";
 import { Upload, FileDown, Loader2, X, ChevronRight } from "lucide-react";
 import Header from "@/app/header";
@@ -10,9 +9,7 @@ import Link from "next/link";
 import * as pdfjs from "pdfjs-dist/build/pdf";
 import CustomAlert from "@/app/components/alert";
 
-// Set the worker source for PDF.js
-
-
+// ✅ Only set worker when in browser
 if (typeof window !== "undefined") {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 }
@@ -25,31 +22,23 @@ export default function PdfToImage() {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-
-    // Reset previous states
     setFile(null);
     setImages([]);
     setAlert({ message: "", status: true });
 
-    if (!selectedFile) {
-      return; // User canceled file selection
-    }
+    if (!selectedFile) return;
 
-    // Security Check 1: File type validation
     if (selectedFile.type !== "application/pdf") {
       setAlert({ message: "Please upload a valid PDF file.", status: false });
       return;
     }
 
-    // Security Check 2: File size limit (e.g., 50 MB)
     const MAX_FILE_SIZE_MB = 50;
-    const maxFileSizeInBytes = MAX_FILE_SIZE_MB * 1024 * 1024;
-    if (selectedFile.size > maxFileSizeInBytes) {
-      setAlert({ message: `File size exceeds the limit of ${MAX_FILE_SIZE_MB} MB.`, status: false });
+    if (selectedFile.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      setAlert({ message: `File size exceeds ${MAX_FILE_SIZE_MB} MB.`, status: false });
       return;
     }
 
-    // If all checks pass
     setFile(selectedFile);
   };
 
@@ -73,10 +62,9 @@ export default function PdfToImage() {
       const loadingTask = pdfjs.getDocument(URL.createObjectURL(file));
       const pdf = await loadingTask.promise;
 
-      // Security Check 3: Number of pages limit (e.g., 100 pages)
       const MAX_PAGES = 100;
       if (pdf.numPages > MAX_PAGES) {
-        setAlert({ message: `PDF has too many pages. The limit is ${MAX_PAGES}.`, status: false });
+        setAlert({ message: `PDF has too many pages. Limit is ${MAX_PAGES}.`, status: false });
         setIsConverting(false);
         return;
       }
@@ -91,20 +79,16 @@ export default function PdfToImage() {
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        await page.render({
-          canvasContext: context,
-          viewport: viewport,
-        }).promise;
+        await page.render({ canvasContext: context, viewport }).promise;
 
-        const imageDataUrl = canvas.toDataURL("image/png");
-        newImages.push(imageDataUrl);
+        newImages.push(canvas.toDataURL("image/png"));
       }
 
       setImages(newImages);
-      setAlert({ message: "Conversion successful! Your images are ready to download.", status: true });
+      setAlert({ message: "Conversion successful! Images are ready.", status: true });
     } catch (err) {
       console.error(err);
-      setAlert({ message: "Failed to convert PDF to image. The file may be corrupted.", status: false });
+      setAlert({ message: "Failed to convert PDF. File may be corrupted.", status: false });
     } finally {
       setIsConverting(false);
     }
@@ -116,6 +100,7 @@ export default function PdfToImage() {
       <ScrollToTopButton />
       <main className="flex-grow">
         <div className="body-div">
+          {/* Breadcrumbs */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center text-sm text-gray-500 mb-2">
               <Link href="/" className="hover:underline cursor-pointer">
@@ -124,14 +109,13 @@ export default function PdfToImage() {
               <ChevronRight size={16} className="mx-1" />
               <span>PDF to Image</span>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              PDF to Image Converter
-            </h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">PDF to Image Converter</h1>
             <p className="text-lg text-gray-600">
               Easily convert your PDF pages into high-quality images
             </p>
           </div>
 
+          {/* Upload Box */}
           <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
               {!file ? (
@@ -173,15 +157,16 @@ export default function PdfToImage() {
               )}
             </div>
 
+            {/* Convert Button */}
             <div className="mt-6 flex justify-center">
               <button
                 onClick={handleConvert}
                 disabled={!file || isConverting}
-                className={`inline-flex cursor-pointer items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white ${
+                className={`inline-flex items-center px-6 py-3 rounded-md text-white ${
                   !file || isConverting
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700"
-                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                }`}
               >
                 {isConverting ? (
                   <>
@@ -195,6 +180,7 @@ export default function PdfToImage() {
             </div>
           </div>
 
+          {/* Converted Images */}
           {images.length > 0 && (
             <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
@@ -202,24 +188,15 @@ export default function PdfToImage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {images.map((image, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 rounded-lg p-4 flex flex-col items-center"
-                  >
-                    <p className="text-sm text-gray-600 mb-2">
-                      Page {index + 1}
-                    </p>
+                  <div key={index} className="bg-gray-100 rounded-lg p-4 flex flex-col items-center">
+                    <p className="text-sm text-gray-600 mb-2">Page {index + 1}</p>
                     <div className="border border-gray-300 rounded-md overflow-hidden mb-4">
-                      <img
-                        src={image}
-                        alt={`Converted Page ${index + 1}`}
-                        className="w-full h-auto object-contain"
-                      />
+                      <img src={image} alt={`Page ${index + 1}`} className="w-full h-auto object-contain" />
                     </div>
                     <a
                       href={image}
                       download={`page-${index + 1}.png`}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                      className="inline-flex items-center px-4 py-2 rounded-md text-white bg-green-600 hover:bg-green-700"
                     >
                       <FileDown className="h-4 w-4 mr-2" />
                       Download
@@ -232,6 +209,7 @@ export default function PdfToImage() {
         </div>
       </main>
       <Footer />
+
       {alert.message && (
         <CustomAlert
           message={alert.message}
