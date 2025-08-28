@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import * as pdfjsLib from "pdfjs-dist"; 
-import "pdfjs-dist/build/pdf.worker.mjs";
-import {Upload,Image as ImageIcon,Loader2,Download,ChevronRight,CircleAlert,CircleCheckBig,
-} from "lucide-react";
+import { Upload, Image as ImageIcon, Loader2, Download, ChevronRight, CircleAlert, CircleCheckBig } from "lucide-react";
 import Link from "next/link";
 import Header from "@/app/header";
 import Footer from "@/app/footer";
@@ -16,9 +13,9 @@ export default function PdfToImage() {
   const [alert, setAlert] = useState(null);
   const [imageWidth, setImageWidth] = useState(800);
   const [imageHeight, setImageHeight] = useState(1000);
-  const [isDragging, setIsDragging] = useState(false); // 💡 NEW: State for drag-and-drop UI feedback
+  const [isDragging, setIsDragging] = useState(false);
 
-  // 💡 MODIFIED: This function now handles both file input and dropped files
+  // Handle file input or dropped file
   const handleFileChange = (e) => {
     let uploadedFile;
     if (e.dataTransfer && e.dataTransfer.files) {
@@ -36,7 +33,7 @@ export default function PdfToImage() {
     }
   };
 
-  // 💡 NEW: Event handlers for drag-and-drop functionality
+  // Drag & Drop handlers
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -69,6 +66,10 @@ export default function PdfToImage() {
 
     let pdfUrl = null;
     try {
+      // 👉 Import pdfjs dynamically (browser only)
+      const pdfjsLib = await import("pdfjs-dist/build/pdf");
+      await import("pdfjs-dist/build/pdf.worker.mjs");
+
       pdfUrl = URL.createObjectURL(file);
       const loadingTask = pdfjsLib.getDocument(pdfUrl);
       const pdf = await loadingTask.promise;
@@ -145,7 +146,7 @@ export default function PdfToImage() {
 
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <div className="flex flex-col items-center gap-4">
-              {/* File Upload with Drag & Drop Handlers */}
+              {/* Upload */}
               <label
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -157,15 +158,10 @@ export default function PdfToImage() {
                 <Upload className="mx-auto h-10 w-10 text-gray-400" />
                 <p className="text-gray-600 mt-2">Click to upload or drag and drop</p>
                 {file && <p className="text-gray-800 font-medium mt-1">File: {file.name}</p>}
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={handleFileChange}
-                  hidden
-                />
+                <input type="file" accept="application/pdf" onChange={handleFileChange} hidden />
               </label>
 
-              {/* ... (rest of the component remains the same) ... */}
+              {/* Inputs */}
               <div className="flex gap-4 w-full justify-center">
                 <input
                   type="number"
@@ -183,6 +179,7 @@ export default function PdfToImage() {
                 />
               </div>
 
+              {/* Convert button */}
               <button
                 onClick={handleConvert}
                 disabled={!file || isConverting}
@@ -201,36 +198,26 @@ export default function PdfToImage() {
                 )}
               </button>
 
+              {/* Alert */}
               {alert && (
                 <div
                   className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium shadow-md ${
-                    alert.status
-                      ? "bg-green-50 text-green-700"
-                      : "bg-red-50 text-red-700"
+                    alert.status ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                   }`}
                 >
-                  {alert.status ? (
-                    <CircleCheckBig className="h-5 w-5" />
-                  ) : (
-                    <CircleAlert className="h-5 w-5" />
-                  )}
+                  {alert.status ? <CircleCheckBig className="h-5 w-5" /> : <CircleAlert className="h-5 w-5" />}
                   {alert.message}
                 </div>
               )}
             </div>
           </div>
+
+          {/* Results */}
           {images.length > 0 && (
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {images.map((src, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white rounded-xl shadow p-4 flex flex-col items-center"
-                >
-                  <img
-                    src={src}
-                    alt={`Page ${idx + 1}`}
-                    className="rounded-lg w-full object-contain"
-                  />
+                <div key={idx} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
+                  <img src={src} alt={`Page ${idx + 1}`} className="rounded-lg w-full object-contain" />
                   <a
                     href={src}
                     download={`page-${idx + 1}.png`}
