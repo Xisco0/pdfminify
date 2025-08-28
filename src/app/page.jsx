@@ -1,9 +1,8 @@
-"use client"
-
+"use client";
 import { useState } from "react";
 import Header from "./header";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import the useRouter hook
+import { useRouter } from "next/navigation";
 import ToolCard from "./components/toolCard";
 import Footer from "./footer";
 import ScrollToTopButton from "./components/scrollUp"
@@ -11,13 +10,10 @@ import LoaderModal from "./components/loader";
 import Script from "next/script";
 
 // lucide icons
-import { Files, Scissors, FileText, Repeat,Minimize2,UnfoldVertical } from "lucide-react";
+import { Files, Scissors, FileText, Repeat, Minimize2, UnfoldVertical, Wrench } from "lucide-react";
 
 export default function Home() {
-  // State to control the visibility of the loader
   const [isLoaderVisible, setIsLoaderVisible] = useState(false);
-  
-  // Initialize the router
   const router = useRouter();
 
   const tools = [
@@ -29,27 +25,24 @@ export default function Home() {
     { title: "Compress Images", description: "Shrink JPG/PNG/WebP images in-browser.", link: "compress/image/compressImage", Icon: UnfoldVertical, note: "Batch images" },
     { title: "Convert Images", description: "Convert between JPG, PNG and WebP.", link: "convert/convertImages", Icon: Repeat, note: "High quality" },
     { title: "DOC ↔ PDF", description: "Convert Word documents to PDF and back.", link: "convert/convertDocs", Icon: Files, note: "Text-based conversion" },
+    { title: "More tools", description: "Discover additional tools to enhance your productivity and workflow", link: "#", Icon: Wrench, note: "Coming soon", isDisabled: true },
   ];
 
   const handleToolClick = (toolLink) => {
     setIsLoaderVisible(true);
-    router.push(toolLink); 
+    router.push(toolLink);
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <ScrollToTopButton/>
-      {/* Render the loader component conditionally */}
       <LoaderModal isVisible={isLoaderVisible} />
-    
       <Header />
-     <Script
+      <Script
         src="https://embed.tawk.to/68a8cf90661c3b192cff578f/1j39mlk90"
         strategy="lazyOnload"
       />
-
-      
-      <section className="body-div">
+      <section className="body-div mt-3">
         <h1 className="text-4xl md:text-5xl font-extrabold font-[title-font] text-gray-900 mb-4">
           All-in-One PDF & File Tools
         </h1>
@@ -58,16 +51,13 @@ export default function Home() {
           convert documents and images — all in your browser.
         </p>
       </section>
-
-      {/* Tools Grid */}
-      <main className="max-w-6xl w-[83%] mx-auto px-4 pb-16">
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 flex-wrap" id="main">
+      <main className="max-w-6xl w-[85%] mx-auto px-4 pb-16">
+        <div className="flex justify-center gap-10 items-center flex-wrap w-full" id="main">
           {tools.map((t, i) => (
-            <div 
-              key={i} 
-              // Added an onClick handler to the wrapper div
-              onClick={() => handleToolClick(t.link)}
-              className="cursor-pointer bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-200"
+            <div
+              key={i}
+              onClick={!t.isDisabled ? () => handleToolClick(t.link) : undefined}
+              className={`flex-grow w-[300px] bg-white border rounded-xl transition-shadow duration-200 ${!t.isDisabled ? 'hover:shadow-lg cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
             >
               <ToolCard
                 title={t.title}
@@ -79,8 +69,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-
-        {/* CTA Section */}
         <section className="mt-12 bg-gray-50 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 border border-gray-200">
           <div>
             <h3 className="text-lg font-semibold">
@@ -100,7 +88,6 @@ export default function Home() {
             </Link>
           </div>
         </section>
-        
       </main>
       <Footer />
     </div>

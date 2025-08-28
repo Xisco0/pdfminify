@@ -68,7 +68,7 @@ export default function PdfToWord() {
       <main className="flex-grow">
         <div className="body-div">
           <div className="text-center mb-12">
-             <div className="flex items-center justify-center text-sm text-gray-500 mb-2">
+            <div className="flex items-center justify-center text-sm text-gray-500 mb-2">
               <Link href="/" className="hover:underline cursor-pointer">
                 Home
               </Link>
