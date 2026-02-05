@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+📄 PDFMinify
 
-## Getting Started
+PDFMinify is a simple web application built with Next.js that allows users to reduce the file size of PDF documents while maintaining good quality. It runs fully in the browser and provides a fast, user-friendly experience.
 
-First, run the development server:
+🚀 Features
 
-```bash
+Upload and compress PDF files
+
+Fast client-side processing
+
+Clean and responsive UI
+
+Secure (no permanent file storage)
+
+Built with modern web technologies
+
+🛠️ Tech Stack
+
+Next.js – React framework for server-side rendering and routing
+
+React – UI library
+
+Tailwind CSS – Styling
+
+PDF processing libraries (example: pdf-lib, browser-image-compression, or any library you used)
+
+JavaScript / TypeScript
+
+Update this list to match the exact libraries you used.
+
+📦 Installation
+
+Clone the repository:
+
+git clone https://github.com/your-username/pdfminify.git
+
+
+Navigate into the project folder:
+
+cd pdfminify
+
+
+Install dependencies:
+
+npm install
+
+
+or
+
+yarn install
+
+▶️ Running the Project
+
+Start the development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Open your browser and visit:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+🧩 How It Works
 
-To learn more about Next.js, take a look at the following resources:
+User uploads a PDF file
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application processes the file using PDF compression libraries
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The optimized PDF is generated
 
-## Deploy on Vercel
+User downloads the compressed version
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+No files are stored on the server.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+📂 Project Structure
+pdfminify/
+├── app/ or pages/
+├── components/
+├── public/
+├── styles/
+├── package.json
+└── README.md
+
+🔐 Security & Privacy
+
+Files are processed temporarily
+
+No user data or documents are stored
+
+Ideal for handling sensitive PDFs
+
+🌱 Future Improvements
+
+Batch PDF compression
+
+Compression level selection
+
+Drag-and-drop upload
+
+Progress indicator
+
+Dark mode
+
+🤝 Contributing
+
+Contributions are welcome!
+
+Fork the repository
+
+Create a new branch
+
+Make your changes
+
+Submit a pull request
+
+📄 License
+
+This project is licensed under the MIT License.
+
+👨‍💻 Author
+
+Francis Bamirin
+Built with ❤️ using Next.js
