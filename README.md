@@ -1,7 +1,6 @@
 # 📄 PDFMinify
 
 
-![CI](https://github.com/xisco0/pdfminify/actions/workflows/ci.yml/badge.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![React](https://img.shields.io/badge/React-18-blue)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.5-skyblue)
@@ -130,7 +129,6 @@ This project is licensed under the MIT License.
 Francis Bamirin
 Built with ❤️ using Next.js
 
-![CI](https://github.com/xisco0/pdfminify/actions/workflows/ci.yml/badge.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![React](https://img.shields.io/badge/React-18-blue)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.5-skyblue)
